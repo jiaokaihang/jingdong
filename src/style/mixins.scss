@@ -3,3 +3,8 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+@mixin tags{
+    margin-top:.08rem ;
+    line-height: .18rem;
+    font-size: .13rem;
+}
