@@ -6,6 +6,13 @@
         张家口职业技术学院1号楼105
         <span class="iconfont position_notice">&#xe613;</span>
       </div>
+      <div class="search">
+       <span class="iconfont">&#xe6e1;</span>
+       <span class="search__text">山姆会员商店优惠商品</span>
+    </div>
+    <div class="banner" >
+      <img class="banner__img" src="banner.webp" alt="">
+    </div>
     </div>
     <div class="docker">
       <div class=" docker__item docker__item--active">
@@ -65,7 +72,31 @@ export default {
   }
 color:$content-fontcolor;
 }
+.search {
+  margin-bottom: .12rem;
+  line-height: .32rem;
+  background: #F5F5F5;
+  color: #B7B7B7;
+  border-radius: .16rem;
+  .iconfont {
+    display: inline-block;
+    padding: 0 .08rem 0 .16rem;
+    font-size: .16rem;
+  }
+  &__text {
+    display: inline-block;
+    font-size: .14rem;
+  }
+}
 
+.banner{
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 25.4%;
+  &__img{
+    width: 100%;
+  }
+}
 .docker {
   display: flex;
   position: absolute;
