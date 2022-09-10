@@ -10,7 +10,11 @@
             <span class="search__text">山姆会员商店优惠商品</span>
         </div>
         <div class="banner">
-            <img class="banner__img" src="../../assets/banner.webp" />
+                <swiper :slides-per-view="1" :space-between="50" >
+                    <swiper-slide> <img class="banner__img" src="../../assets/lunbo2.webp" /></swiper-slide>
+                    <swiper-slide> <img class="banner__img" src="../../assets/lunbo1.webp" /></swiper-slide>
+                    <swiper-slide> <img class="banner__img" src="../../assets/lunbo3.webp" /></swiper-slide>
+                </swiper>
         </div>
         <div class="icons">
             <div class="icons__item">
@@ -59,14 +63,22 @@
 </template>
 
 <script>
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import 'swiper/css'
 export default {
-  name: ' staticPart '
+  name: ' staticPart ',
+  components: {
+    Swiper,
+    // eslint-disable-next-line no-undef
+    SwiperSlide
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '../../style/viriables.scss';
 @import '../../style/mixins.scss';
+
 .position {
     position: relative;
     padding: .16rem .24rem .16rem 0;
@@ -113,10 +125,9 @@ export default {
     height: 0;
     overflow: hidden;
     padding-bottom: 25.4%;
-
-    &__img {
-        width: 100%;
-    }
+        &__img{
+            width:100%
+        }
 }
 
 .icons {
