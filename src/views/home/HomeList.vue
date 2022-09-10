@@ -26,6 +26,7 @@ export default {
 @import '../../style/mixins.scss';
 
 .wrapper {
+    background-image: url('https://www.16pic.com/pic/pic_9306902.html');
     overflow-y: auto;
     position: absolute;
     left: 0;
