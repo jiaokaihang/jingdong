@@ -1,16 +1,14 @@
 <template>
   <div>
-      <HomeList />
+    <router-view />
   </div>
 </template>
 
 <script>
-import HomeList from './views/home/HomeList'
+
 export default {
-  name: 'App-list',
-  components: {
-    HomeList
-  }
+  name: 'App-list'
+
 }
 </script>
 
