@@ -39,6 +39,5 @@ router.beforeEach((to, from, next) => {
   const { name } = to
   const isLoginOrRegister = (name === 'Login' || name === 'Register');
   (isLogin || isLoginOrRegister) ? next() : next({ name: 'Login' })
-  console.log(isLoginOrRegister)
 })
 export default router

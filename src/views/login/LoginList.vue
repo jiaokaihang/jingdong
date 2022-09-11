@@ -10,50 +10,38 @@
       </div>
       <div class="wrapper__login-button" @click="handleLogin">登录</div>
       <div class="wrapper__login-link" @click="handleRegisterClick">立即注册</div>
-      <Toast  v-if="data.showToast" :message='data.toastMessage'/>
+      <Toast  v-if="toastData.showToast" :message='toastData.toastMessage'/>
     </div>
   </div>
 </template>
 
 <script>
 import { useRouter } from 'vue-router'
-import { post } from '../../utils/request'
 import { reactive } from '@vue/reactivity'
-import Toast from '../../components/Toast'
-
+import { post } from '../../utils/request'
+import Toast, { useToastEffect } from '../../components/Toast'
 export default {
   name: ' LoginList ',
   components: { Toast },
   setup () {
-    const data = reactive({
-      username: '',
-      password: '',
-      showToast: false,
-      toastMessage: ''
-    })
-
-    const changeToast = (message) => {
-      data.showToast = true
-      data.toastMessage = '登录失败'
-      setTimeout(() => {
-        data.showToast = false
-        data.toastMessage = ''
-      }, 2000)
-    }
     const router = useRouter()
+    const data = reactive({ username: '', password: '' })
+    const { toastData, changeToast } = useToastEffect()
     const handleLogin = async () => {
       try {
-        const result = await post('1/api/user/login', {
+        const result = await post('/api/user/login', {
           username: data.username,
           password: data.password
         })
-        if (result?.data?.errno === 0) {
+        console.log(result)
+        if (result?.errno === 0) {
           localStorage.isLogin = true
           router.push({ name: 'Home' })
         } else {
           changeToast('登录失败')
         }
       } catch (e) {
+        console.log(e.message)
         changeToast('请求失败')
       }
     }
@@ -61,7 +49,7 @@ export default {
       router.push({ name: 'Register' })
       console.log('111')
     }
-    return { handleLogin, handleRegisterClick, data }
+    return { handleLogin, handleRegisterClick, data, toastData }
   }
 }
 </script>

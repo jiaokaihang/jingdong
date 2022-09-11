@@ -5,9 +5,26 @@
 </template>
 
 <script>
+import { reactive } from '@vue/reactivity'
 export default {
   name: 'ToastList',
   props: ['message']
+}
+export const useToastEffect = () => {
+  const toastData = reactive({
+    showToast: false,
+    toastMessage: ''
+  })
+  const changeToast = (message) => {
+    console.log(message)
+    toastData.showToast = true
+    toastData.toastMessage = '登录失败'
+    setTimeout(() => {
+      toastData.showToast = false
+      toastData.toastMessage = ''
+    }, 2000)
+  }
+  return { toastData, changeToast }
 }
 </script>
 
