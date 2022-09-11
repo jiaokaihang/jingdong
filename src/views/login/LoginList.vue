@@ -16,6 +16,7 @@
           class="wrapper__input__content"
           placeholder="请输入密码"
           v-model="password"
+          autocomplete="new-password"
         />
       </div>
       <div class="wrapper__login-button" @click="handleLogin">登录</div>
@@ -32,13 +33,18 @@ import { useRouter } from 'vue-router'
 import { reactive, toRefs } from 'vue'
 import { post } from '../../utils/request'
 import Toast, { useToastEffect } from '../../components/Toast'
-
+// 处理注册逻辑
 const useLoginEffect = (changeToast) => {
   const router = useRouter()
   const data = reactive({ username: '', password: '' })
-  console.log(data)
   const handleLogin = async () => {
     try {
+      const { username, password } = data
+      if (username === '' || password === '') {
+        console.log(data)
+        changeToast('登录失败')
+        return
+      }
       const result = await post('/api/user/login', {
         username: data.username,
         password: data.password
@@ -55,10 +61,10 @@ const useLoginEffect = (changeToast) => {
       changeToast('请求失败')
     }
   }
-  const { username, passwowrd } = toRefs(data)
-  return { username, passwowrd, handleLogin }
+  const { username, password } = toRefs(data)
+  return { username, password, handleLogin }
 }
-
+// 点击注册跳转
 const useRegisterEffect = () => {
   const router = useRouter()
   const handleRegisterClick = () => {
@@ -74,13 +80,13 @@ export default {
   setup () {
     // setup的职责就是说，代码执行的一个流程
     const { showToast, toastMessage, changeToast } = useToastEffect() // 弹窗组件
-    const { username, passwowrd, handleLogin } = useLoginEffect(changeToast) // 登陆页面的逻辑
+    const { username, password, handleLogin } = useLoginEffect(changeToast) // 登陆页面的逻辑
     const { handleRegisterClick } = useRegisterEffect() // 注册页面的逻辑
     return {
       handleLogin,
       handleRegisterClick,
       username,
-      passwowrd,
+      password,
       showToast,
       toastMessage
     }
