@@ -8,8 +8,11 @@
       <div class="wrapper__input">
         <input type="password" class="wrapper__input__content" placeholder="请输入密码">
       </div>
-      <div class="wrapper__login-button" @click="handleLogin">登录</div>
-      <div class="wrapper__login-link" @click="handleRegisterClick">立即注册</div>
+      <div class="wrapper__input">
+        <input type="password" class="wrapper__input__content" placeholder="请确认密码">
+      </div>
+      <div class="wrapper__login-button" >注册</div>
+      <div class="wrapper__login-link" @click="handleLoginClick">使用已有账号登录</div>
     </div>
   </div>
 </template>
@@ -17,18 +20,15 @@
 <script>
 import { useRouter } from 'vue-router'
 export default {
-  name: ' LoginList ',
+  name: ' RegisterList ',
   setup () {
+    console.log('122')
     const router = useRouter()
-    const handleLogin = () => {
-      localStorage.isLogin = true
-      router.push({ name: 'Home' })
+    const handleLoginClick = () => {
+      // localStorage.isLogin = true
+      router.push({ name: 'Login' })
     }
-    const handleRegisterClick = () => {
-      router.push({ name: 'Register' })
-      console.log('111')
-    }
-    return { handleLogin, handleRegisterClick }
+    return { handleLoginClick }
   }
 }
 </script>
@@ -40,7 +40,7 @@ export default {
   left: 0;
   right: 0;
   transform: translateY(-50%);
-  height: 3.4rem;
+  height: 4rem;
   &__img{
     display: block;
     margin: 0 auto .4rem auto;
