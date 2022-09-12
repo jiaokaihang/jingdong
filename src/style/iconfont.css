@@ -2,9 +2,10 @@
   font-family: 'iconfont';
   /* Project id 3639412 */
   src: url('https://at.alicdn.com/t/font_985780_km7mi63cihi.eot?t=1545807318834');
-  src: url('//at.alicdn.com/t/c/font_3639412_98qhk65ferq.woff2?t=1662795800326') format('woff2'),
-    url('//at.alicdn.com/t/c/font_3639412_98qhk65ferq.woff?t=1662795800326') format('woff'),
-    url('//at.alicdn.com/t/c/font_3639412_98qhk65ferq.ttf?t=1662795800326') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_3639412_kuqhbxlfa7e.woff2?t=1662987293136') format('woff2'),
+       url('//at.alicdn.com/t/c/font_3639412_kuqhbxlfa7e.woff?t=1662987293136') format('woff'),
+       url('//at.alicdn.com/t/c/font_3639412_kuqhbxlfa7e.ttf?t=1662987293136') format('truetype');
+
 }
 
 .iconfont {
