@@ -54,7 +54,7 @@ const useLoginEffect = (changeToast) => {
         localStorage.isLogin = true
         router.push({ name: 'Home' })
       } else {
-        changeToast('登录失败')
+        changeToast('登陆失败！')
       }
     } catch (e) {
       console.log(e.message)
