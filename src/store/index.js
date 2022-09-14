@@ -5,6 +5,7 @@ export default createStore({
     // 第一层级是商铺的Id
     carList: {
       // shopId: {
+      // shopName: '沃尔玛'
       //   // 第二层是商品Id
       //   // 第二层是商品内容以及购物数量
       //   productId: {
@@ -26,13 +27,9 @@ export default createStore({
     changeCartItemInfo (state, payload) {
       console.log('22222222', payload)
       const { shopId, productId, productInfo } = payload
-      let shopInfo = state.carList[shopId]
-      console.log('222', shopInfo)
-      if (!shopInfo) { shopInfo = {} }
+      let shopInfo = state.carList[shopId] || {}
       let product = shopInfo[productId]
-      console.log('111', product)
       if (!product) {
-        console.log(333333)
         product = productInfo
         product.count = 0
       }
@@ -40,6 +37,12 @@ export default createStore({
       if (payload.num > 0) { product.check = true }
       if (product.count < 0) { product.count = 0 }
       shopInfo[productId] = product
+      state.carList[shopId] = shopInfo
+    },
+    changeShopname (state, payload) {
+      const { shopId, shopName } = payload
+      const shopInfo = state.carList[shopId] || { showName: '', productList: {} }
+      shopInfo.shopName = shopName
       state.carList[shopId] = shopInfo
     },
     changeCartItemCheck (state, payload) {

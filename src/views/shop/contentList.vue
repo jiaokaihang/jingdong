@@ -27,11 +27,11 @@
         </div>
         <div class="product__number">
           <span class="product__number__minus"
-          @click="() => {changeCartItemInfo(shopId, item._id, item, -1)}"
+          @click="() => {changeCartItem(shopId, item._id, item, -1)}"
           >-</span>
-          {{cartList?.[shopId]?.[item.count]?.count ||  0  }}
+          {{cartList?.[shopId]?.productList?.[item.count]?.count ||  0  }}
           <span class="product__number__add"
-           @click="() => {changeCartItemInfo(shopId, item._id, item, 1)}"
+           @click="() => {changeCartItem(shopId, item._id, item, 1)}"
           >+</span>
         </div>
       </div>
@@ -42,6 +42,7 @@
 <script>
 import { reactive, ref, toRefs, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 import { get } from '../../utils/request'
 import { useCommenCartEffect } from './commonCartEffect'
 
@@ -78,11 +79,21 @@ export default {
   name: 'contentList',
   setup () {
     const route = useRoute()
+    const store = useStore()
     const shopId = route.params.id
     const { currentTab, handelTabClick } = useTabEffect()
     const { list } = useCurrentListEffect(currentTab, shopId)
     const { cartList, changeCartItemInfo } = useCommenCartEffect()
-    return { categories, handelTabClick, currentTab, list, cartList, shopId, changeCartItemInfo }
+    const changeShopName = (shopId, shopName) => {
+      store.commit('changeShopName', {
+        shopId, shopName
+      })
+    }
+    const changeCartItem = (shopId, productId, item, num) => {
+      changeCartItemInfo(shopId, productId, item, num)
+      // changeShopName(shopId, shopName)
+    }
+    return { categories, handelTabClick, currentTab, list, cartList, shopId, changeCartItem }
   }
 }
 </script>

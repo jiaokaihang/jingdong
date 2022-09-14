@@ -1,15 +1,15 @@
+<!-- eslint-disable no-unused-vars -->
 <template>
-  <div class="mask"  v-if="showChart" />
+  <div class="mask"  v-if="showChart"  @click="handelChartShowChange"/>
   <div class="cart">
     <div class="product" v-if="showChart">
       <div class="product__header">
         <div class="product__header__all" @click="() => setCartItemChecked(shopId)">
-          <span class="product__header__icon iconfont" v-html="allChecked ? '&#xe70f;' : '&#xe6f7;'"></span>
+          <span class="product__header__icon iconfont" v-html="allChecked ? '&#xe70f;' : '&#xe619;'"></span>
           全选</div>
        <div class="product__header__clear"
-       @click="() => cleanCartProducts(shopId)"
        >
-        清空购物车
+       <span @click="() => cleanCartProducts(shopId)"> 清空购物车</span>
        </div>
       </div>
       <template
@@ -19,7 +19,7 @@
        <div class="product__item"   v-if="item.count > 0">
         <div
          class="product__item__checked iconfont"
-         v-html="item.check ?  '&#xe70f;' : '&#xe6f7;' "
+         v-html="item.check ?  '&#xe70f;' : '&#xe619;' "
          @click.stop="() =>changeCartItemCheck(shopId, item._id)"
          >
         </div>
@@ -55,7 +55,11 @@
       <div class="check__info">
         总计：<span class="check__info__price">&yen;{{price}}</span>
       </div>
-      <div class="check__btn">去结算</div>
+      <div class="check__btn">
+        <router-link :to="{name: orderCreation }">
+          去结算
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -129,17 +133,22 @@ const useCartEffect = (shopId) => {
   }
   return { total, price, productList, changeCartItemInfo, changeCartItemCheck, cleanCartProducts, allChecked, setCartItemChecked }
 }
+// 展示隐藏购物车逻辑
+const toggleCartEffect = () => {
+  const showChart = ref(false)
+  const handelChartShowChange = () => {
+    showChart.value = !showChart.value
+  }
+  return { handelChartShowChange, showChart }
+}
 
 export default {
   name: 'cartList',
   setup () {
     const route = useRoute()
     const shopId = route.params.id
-    const showChart = ref(false)
-    const handelChartShowChange = () => {
-      showChart.value = !showChart.value
-    }
     const { total, price, productList, changeCartItemInfo, changeCartItemCheck, cleanCartProducts, allChecked, setCartItemChecked } = useCartEffect(shopId)
+    const { showChart, handelChartShowChange } = toggleCartEffect()
     return { total, price, shopId, productList, changeCartItemInfo, changeCartItemCheck, cleanCartProducts, allChecked, setCartItemChecked, showChart, handelChartShowChange }
   }
 }
@@ -163,18 +172,18 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 2;
-  background: #fff;
+  background: $bgColor
 }
 .product {
   overflow-y: scroll;
   flex: 1;
-  background: #fff;
+  background:  $bgColor;
   &__header{
     display: flex;
    line-height: .40rem;
     border-bottom: 1px solid  #F1F1F1;
     font-size: .14rem;
-    color: #333;
+    color: $content-fontcolor;
     &__all{
       width: .64rem;
       margin-left: .16rem;
@@ -183,6 +192,7 @@ export default {
       display: inline-block;
       color: $background;
       font-size: .2rem;
+      vertical-align: top;
     }
     &__clear{
       flex: 1;
@@ -235,7 +245,7 @@ export default {
     }
     .product__number {
       position: absolute;
-      bottom: 0.12rem;
+      bottom: 0.26rem;
       right: 0;
       &__minus,
       &__add {
@@ -305,8 +315,11 @@ export default {
     width: .98rem;
     background-color: #4FB0F9;
     text-align: center;
-    color:$bgColor;
     font-size: .14rem;
+    a{
+      color:$bgColor;
+      text-decoration: none;
+    }
   }
 }
 </style>
