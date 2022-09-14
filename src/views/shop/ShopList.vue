@@ -1,5 +1,4 @@
 <template>
-  <div>
     <div class="wrapper">
       <div class="search">
         <div class="search__back iconfont" @click="handelBackClick">&#xe710;</div>
@@ -10,8 +9,8 @@
       </div>
       <shop-info :item="item" :hideBorder="true" v-show="item.imgUrl"/>
       <content-list />
+      <cart-list />
     </div>
-  </div>
 </template>
 
 <script>
@@ -20,6 +19,7 @@ import { reactive, toRefs } from 'vue'
 import { get } from '../../utils/request'
 import ShopInfo from '../../components/ShopInfo'
 import contentList from './contentList'
+import cartList from './cartList'
 // 获取当前商铺信息
 const useShopInfoEffect = () => {
   const route = useRoute()
@@ -44,7 +44,7 @@ const useBackRouterEffect = () => {
 
 export default {
   name: 'ShopList',
-  components: { ShopInfo, contentList },
+  components: { ShopInfo, contentList, cartList },
   setup () {
     const { item, getItemData } = useShopInfoEffect()
     const handelBackClick = useBackRouterEffect()
