@@ -29,7 +29,7 @@
           <span class="product__number__minus"
           @click="() => {changeCartItemInfo(shopId, item._id, item, -1)}"
           >-</span>
-          {{item.count ||  0  }}
+          {{cartList?.[shopId]?.[item.count]?.count ||  0  }}
           <span class="product__number__add"
            @click="() => {changeCartItemInfo(shopId, item._id, item, 1)}"
           >+</span>

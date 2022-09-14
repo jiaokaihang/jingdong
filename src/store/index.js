@@ -37,9 +37,29 @@ export default createStore({
         product.count = 0
       }
       product.count += payload.num
+      if (payload.num > 0) { product.check = true }
       if (product.count < 0) { product.count = 0 }
       shopInfo[productId] = product
       state.carList[shopId] = shopInfo
+    },
+    changeCartItemCheck (state, payload) {
+      const { shopId, productId } = payload
+      const product = state.carList[shopId][productId]
+      product.check = !product.check
+    },
+    cleanCartProducts (state, payload) {
+      const { shopId } = payload
+      state.carList[shopId] = {}
+    },
+    setCartItemChecked (state, payload) {
+      const { shopId } = payload
+      const products = state.carList[shopId]
+      if (products) {
+        for (let key in products) {
+          const product = products[key]
+          product.check = true
+        }
+      }
     }
   },
   actions: {

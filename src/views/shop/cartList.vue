@@ -1,11 +1,28 @@
 <template>
+  <div class="mask"  v-if="showChart" />
   <div class="cart">
-    <div class="product">
+    <div class="product" v-if="showChart">
+      <div class="product__header">
+        <div class="product__header__all" @click="() => setCartItemChecked(shopId)">
+          <span class="product__header__icon iconfont" v-html="allChecked ? '&#xe70f;' : '&#xe6f7;'"></span>
+          全选</div>
+       <div class="product__header__clear"
+       @click="() => cleanCartProducts(shopId)"
+       >
+        清空购物车
+       </div>
+      </div>
       <template
        v-for="item in productList"
        :key='item._id'
        >
-       <div class="product__item" v-if="item.count > 0">
+       <div class="product__item"   v-if="item.count > 0">
+        <div
+         class="product__item__checked iconfont"
+         v-html="item.check ?  '&#xe70f;' : '&#xe6f7;' "
+         @click.stop="() =>changeCartItemCheck(shopId, item._id)"
+         >
+        </div>
        <img class="product__item__img"  :src="item.imgUrl"  />
         <div class="product__item__detail">
           <h4 class="product__item__title">{{item.name}}</h4>
@@ -31,6 +48,7 @@
         <img
           src="http://www.dell-lee.com/imgs/vue3/basket.png"
           class="check__icon__img"
+          @click="handelChartShowChange"
         />
         <div class="check__icon__tag">{{total}}</div>
       </div>
@@ -43,11 +61,12 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { useCommenCartEffect } from './commonCartEffect'
 const useCartEffect = (shopId) => {
+  const { changeCartItemInfo } = useCommenCartEffect()
   const store = useStore()
   const carList = store.state.carList
   const total = computed(() => {
@@ -67,16 +86,48 @@ const useCartEffect = (shopId) => {
     if (productList) {
       for (let i in productList) {
         let product = productList[i]
-        count += (product.count * product.price)
+        if (product.check) {
+          count += (product.count * product.price)
+        }
       }
     }
     return count.toFixed(2)
+  })
+  const allChecked = computed(() => {
+    const productList = carList[shopId]
+    let result = true
+    if (productList) {
+      for (let i in productList) {
+        let product = productList[i]
+        if (product.count > 0 && !product.check) {
+          result = false
+        }
+      }
+    }
+    return result
   })
   const productList = computed(() => {
     const productList = carList[shopId]
     return productList
   })
-  return { total, price, productList }
+
+  const changeCartItemCheck = (shopId, productId) => {
+    store.commit('changeCartItemCheck', {
+      shopId, productId
+    })
+  }
+
+  const cleanCartProducts = (shopId) => {
+    store.commit('cleanCartProducts', {
+      shopId
+    })
+  }
+  const setCartItemChecked = (shopId) => {
+    store.commit('setCartItemChecked', {
+      shopId
+    })
+  }
+  return { total, price, productList, changeCartItemInfo, changeCartItemCheck, cleanCartProducts, allChecked, setCartItemChecked }
 }
 
 export default {
@@ -84,9 +135,12 @@ export default {
   setup () {
     const route = useRoute()
     const shopId = route.params.id
-    const { total, price, productList } = useCartEffect(shopId)
-    const { changeCartItemInfo } = useCommenCartEffect()
-    return { total, price, shopId, productList, changeCartItemInfo }
+    const showChart = ref(false)
+    const handelChartShowChange = () => {
+      showChart.value = !showChart.value
+    }
+    const { total, price, productList, changeCartItemInfo, changeCartItemCheck, cleanCartProducts, allChecked, setCartItemChecked } = useCartEffect(shopId)
+    return { total, price, shopId, productList, changeCartItemInfo, changeCartItemCheck, cleanCartProducts, allChecked, setCartItemChecked, showChart, handelChartShowChange }
   }
 }
 </script>
@@ -94,22 +148,60 @@ export default {
 <style lang="scss" scoped>
 @import "../../style/mixins.scss";
 @import "../../style/viriables.scss";
+.mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: rgba(0, 0, 0, .5);
+  z-index: 1;
+}
 .cart {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 2;
+  background: #fff;
 }
 .product {
   overflow-y: scroll;
   flex: 1;
   background: #fff;
+  &__header{
+    display: flex;
+   line-height: .40rem;
+    border-bottom: 1px solid  #F1F1F1;
+    font-size: .14rem;
+    color: #333;
+    &__all{
+      width: .64rem;
+      margin-left: .16rem;
+    }
+    &__icon {
+      display: inline-block;
+      color: $background;
+      font-size: .2rem;
+    }
+    &__clear{
+      flex: 1;
+      text-align: right;
+      margin-right: .18rem;
+    }
+  }
   &__item {
     position: relative;
     display: flex;
     padding: 0.12rem 0;
     margin: 0 0.16rem;
     border-bottom: 0.01rem solid $content-bgColor;
+    &__checked {
+      line-height: .5rem;
+      margin-right: .2rem;
+      color: $background;
+      font-size: .2rem;
+    }
     &__detail {
       overflow: hidden;
     }
@@ -129,7 +221,7 @@ export default {
       margin: .06 0 0 0;
       line-height: 0.2rem;
       font-size: 0.14rem;
-      color: #e93b3b;
+      color:$hightlight-fontColor;
     }
     &__yen {
       font-size: 0.12rem;
@@ -194,7 +286,7 @@ export default {
       border-radius: .1rem;
       font-size: .12rem;
       text-align: center;
-      color: #fff;
+      color: $bgColor;
       transform: scale(.5);
       transform-origin: left center;
     }
@@ -213,7 +305,7 @@ export default {
     width: .98rem;
     background-color: #4FB0F9;
     text-align: center;
-    color: #FFF;
+    color:$bgColor;
     font-size: .14rem;
   }
 }
