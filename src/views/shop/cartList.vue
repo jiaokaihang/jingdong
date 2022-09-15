@@ -68,11 +68,11 @@
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import { useCommenCartEffect } from './commonCartEffect'
+import { useCommenCartEffect } from '../../effects/cartEffects'
 // 获取购物车信息相关逻辑
 const useCartEffect = (shopId) => {
   const store = useStore()
-  const { cartList, changeCartItemInfo } = useCommenCartEffect()
+  const { cartList, productList, changeCartItemInfo } = useCommenCartEffect(shopId)
   const calculations = computed(() => {
     const productList = cartList[shopId]?.productList
     const result = { total: 0, price: 0, allChecked: true }
@@ -90,10 +90,6 @@ const useCartEffect = (shopId) => {
     }
     result.price = result.price.toFixed(2)
     return result
-  })
-  const productList = computed(() => {
-    const productList = cartList[shopId]?.productList
-    return productList
   })
 
   const changeCartItemCheck = (shopId, productId) => {
