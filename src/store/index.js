@@ -27,19 +27,21 @@ export default createStore({
     changeCartItemInfo (state, payload) {
       console.log('22222222', payload)
       const { shopId, productId, productInfo } = payload
-      let shopInfo = state.carList[shopId] || {}
-      let product = shopInfo[productId]
+      let shopInfo = state.carList[shopId] || {
+        showName: '', productList: {}
+      }
+      let product = shopInfo.productList[productId]
       if (!product) {
+        productInfo.count = 0
         product = productInfo
-        product.count = 0
       }
       product.count += payload.num
       if (payload.num > 0) { product.check = true }
       if (product.count < 0) { product.count = 0 }
-      shopInfo[productId] = product
+      shopInfo.productList[productId] = product
       state.carList[shopId] = shopInfo
     },
-    changeShopname (state, payload) {
+    changeShopName (state, payload) {
       const { shopId, shopName } = payload
       const shopInfo = state.carList[shopId] || { showName: '', productList: {} }
       shopInfo.shopName = shopName
@@ -47,16 +49,16 @@ export default createStore({
     },
     changeCartItemCheck (state, payload) {
       const { shopId, productId } = payload
-      const product = state.carList[shopId][productId]
+      const product = state.carList[shopId].productList[productId]
       product.check = !product.check
     },
     cleanCartProducts (state, payload) {
       const { shopId } = payload
-      state.carList[shopId] = {}
+      state.carList[shopId].productList = {}
     },
     setCartItemChecked (state, payload) {
       const { shopId } = payload
-      const products = state.carList[shopId]
+      const products = state.carList[shopId].productList
       if (products) {
         for (let key in products) {
           const product = products[key]
