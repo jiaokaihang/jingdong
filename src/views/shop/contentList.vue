@@ -29,7 +29,7 @@
           <span class="product__number__minus"
           @click="() => {changeCartItem(shopId, item._id, item, -1, shopName)}"
           >-</span>
-          {{item.count ||  0  }}
+          {{getProductCartCount(shopId, item._id)}}
           <span class="product__number__add"
            @click="() => {changeCartItem(shopId, item._id, item, 1, shopName)}"
           >+</span>
@@ -69,32 +69,38 @@ const useCurrentListEffect = (currentTab, shopId) => {
       content.list = result.data
     }
   }
-
   watchEffect(() => { getContentdata() })
   const { list } = toRefs(content)
   return { list }
 }
-
+// 购物车相关逻辑
+const useCartEffect = () => {
+  const store = useStore()
+  const { cartList, changeCartItemInfo } = useCommenCartEffect()
+  const changeShopName = (shopId, shopName) => {
+    store.commit('changeShopName', {
+      shopId, shopName
+    })
+  }
+  const changeCartItem = (shopId, productId, item, num, shopName) => {
+    changeCartItemInfo(shopId, productId, item, num)
+    changeShopName(shopId, shopName)
+  }
+  const getProductCartCount = (shopId, productId) => {
+    return cartList?.[shopId]?.productList?.[productId]?.count || 0
+  }
+  return { cartList, changeCartItem, getProductCartCount }
+}
 export default {
   name: 'contentList',
   props: ['shopName'],
   setup () {
     const route = useRoute()
-    const store = useStore()
     const shopId = route.params.id
     const { currentTab, handelTabClick } = useTabEffect()
     const { list } = useCurrentListEffect(currentTab, shopId)
-    const { cartList, changeCartItemInfo } = useCommenCartEffect()
-    const changeShopName = (shopId, shopName) => {
-      store.commit('changeShopName', {
-        shopId, shopName
-      })
-    }
-    const changeCartItem = (shopId, productId, item, num, shopName) => {
-      changeCartItemInfo(shopId, productId, item, num)
-      changeShopName(shopId, shopName)
-    }
-    return { categories, handelTabClick, currentTab, list, cartList, shopId, changeCartItem }
+    const { cartList, changeCartItem, getProductCartCount } = useCartEffect()
+    return { categories, handelTabClick, currentTab, list, cartList, shopId, changeCartItem, getProductCartCount }
   }
 }
 </script>

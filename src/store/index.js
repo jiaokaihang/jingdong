@@ -1,25 +1,18 @@
 import { createStore } from 'vuex'
 
+const setLocalStorage = (state) => {
+  const { carList } = state
+  const carListString = JSON.stringify(carList)
+  localStorage.carList = carListString
+}
+
+const getLocalStorage = () => {
+  return JSON.parse(localStorage.carList) || {}
+}
 export default createStore({
   state: {
     // 第一层级是商铺的Id
-    carList: {
-      // shopId: {
-      // shopName: '沃尔玛'
-      //   // 第二层是商品Id
-      //   // 第二层是商品内容以及购物数量
-      //   productId: {
-      //     _id: '1',
-      //     name: '番茄250g/份',
-      //     imgUrl: 'http://www.dell-lee.com/imgs/vue3/tomato.png',
-      //     sales: 10,
-      //     price: 33.6,
-      //     oldPrice: 39.6,
-      //     count: 2
-
-      //   }
-      // }
-    }
+    carList: getLocalStorage()
   },
   getters: {
   },
@@ -40,21 +33,25 @@ export default createStore({
       if (product.count < 0) { product.count = 0 }
       shopInfo.productList[productId] = product
       state.carList[shopId] = shopInfo
+      setLocalStorage(state)
     },
     changeShopName (state, payload) {
       const { shopId, shopName } = payload
       const shopInfo = state.carList[shopId] || { showName: '', productList: {} }
       shopInfo.shopName = shopName
       state.carList[shopId] = shopInfo
+      setLocalStorage(state)
     },
     changeCartItemCheck (state, payload) {
       const { shopId, productId } = payload
       const product = state.carList[shopId].productList[productId]
       product.check = !product.check
+      setLocalStorage(state)
     },
     cleanCartProducts (state, payload) {
       const { shopId } = payload
       state.carList[shopId].productList = {}
+      setLocalStorage(state)
     },
     setCartItemChecked (state, payload) {
       const { shopId } = payload
@@ -65,6 +62,7 @@ export default createStore({
           product.check = true
         }
       }
+      setLocalStorage(state)
     }
   },
   actions: {

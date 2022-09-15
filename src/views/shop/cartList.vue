@@ -1,11 +1,11 @@
 <!-- eslint-disable no-unused-vars -->
 <template>
-  <div class="mask"  v-if="showChart"  @click="handelChartShowChange"/>
+  <div class="mask"  v-if="showChart &&  calculations.total > 0"  @click="handelChartShowChange"/>
   <div class="cart">
-    <div class="product" v-if="showChart">
+    <div class="product" v-if="showChart && calculations.total > 0">
       <div class="product__header">
         <div class="product__header__all" @click="() => setCartItemChecked(shopId)">
-          <span class="product__header__icon iconfont" v-html="allChecked ? '&#xe70f;' : '&#xe619;'"></span>
+          <span class="product__header__icon iconfont" v-html="calculations.allChecked ? '&#xe70f;' : '&#xe619;'"></span>
           全选</div>
        <div class="product__header__clear"
        >
@@ -50,10 +50,10 @@
           class="check__icon__img"
           @click="handelChartShowChange"
         />
-        <div class="check__icon__tag">{{total}}</div>
+        <div class="check__icon__tag">{{calculations.total}}</div>
       </div>
       <div class="check__info">
-        总计：<span class="check__info__price">&yen;{{price}}</span>
+        总计：<span class="check__info__price">&yen;{{calculations.price}}</span>
       </div>
       <div class="check__btn">
         <router-link :to="{name: orderCreation }">
@@ -69,49 +69,30 @@ import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { useCommenCartEffect } from './commonCartEffect'
+// 获取购物车信息相关逻辑
 const useCartEffect = (shopId) => {
-  const { changeCartItemInfo } = useCommenCartEffect()
   const store = useStore()
-  const carList = store.state.carList
-  const total = computed(() => {
-    const productList = carList[shopId]?.productList
-    let count = 0
+  const { cartList, changeCartItemInfo } = useCommenCartEffect()
+  const calculations = computed(() => {
+    const productList = cartList[shopId]?.productList
+    const result = { total: 0, price: 0, allChecked: true }
     if (productList) {
       for (let i in productList) {
         let product = productList[i]
-        count += product.count
-      }
-    }
-    return count
-  })
-  const price = computed(() => {
-    const productList = carList[shopId]?.productList
-    let count = 0
-    if (productList) {
-      for (let i in productList) {
-        let product = productList[i]
+        result.total += product.count
         if (product.check) {
-          count += (product.count * product.price)
+          result.price += (product.count * product.price)
         }
-      }
-    }
-    return count.toFixed(2)
-  })
-  const allChecked = computed(() => {
-    const productList = carList[shopId]?.productList
-    let result = true
-    if (productList) {
-      for (let i in productList) {
-        let product = productList[i]
         if (product.count > 0 && !product.check) {
-          result = false
+          result.allChecked = false
         }
       }
     }
+    result.price = result.price.toFixed(2)
     return result
   })
   const productList = computed(() => {
-    const productList = carList[shopId]?.productList
+    const productList = cartList[shopId]?.productList
     return productList
   })
 
@@ -131,7 +112,7 @@ const useCartEffect = (shopId) => {
       shopId
     })
   }
-  return { total, price, productList, changeCartItemInfo, changeCartItemCheck, cleanCartProducts, allChecked, setCartItemChecked }
+  return { productList, changeCartItemInfo, changeCartItemCheck, cleanCartProducts, calculations, setCartItemChecked }
 }
 // 展示隐藏购物车逻辑
 const toggleCartEffect = () => {
@@ -147,9 +128,9 @@ export default {
   setup () {
     const route = useRoute()
     const shopId = route.params.id
-    const { total, price, productList, changeCartItemInfo, changeCartItemCheck, cleanCartProducts, allChecked, setCartItemChecked } = useCartEffect(shopId)
+    const { calculations, productList, changeCartItemInfo, changeCartItemCheck, cleanCartProducts, setCartItemChecked } = useCartEffect(shopId)
     const { showChart, handelChartShowChange } = toggleCartEffect()
-    return { total, price, shopId, productList, changeCartItemInfo, changeCartItemCheck, cleanCartProducts, allChecked, setCartItemChecked, showChart, handelChartShowChange }
+    return { shopId, productList, changeCartItemInfo, changeCartItemCheck, cleanCartProducts, calculations, setCartItemChecked, showChart, handelChartShowChange }
   }
 }
 </script>
