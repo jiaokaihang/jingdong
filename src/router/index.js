@@ -16,6 +16,7 @@ const routes = [
     component: () => import(/* webpackChunkName: 'shop_123123' */ '../views/shop/ShopList')
   },
   {
+    // /:id
     path: '/orderConfirmation/:id',
     name: 'OrderConfirmation',
     component: () => import(/* webpackChunkName: 'OrderConfirmation_123123' */ '../views/orderConfirmation/OrderConfirmation')

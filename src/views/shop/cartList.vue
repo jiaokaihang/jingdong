@@ -12,11 +12,8 @@
        <span @click="() => cleanCartProducts(shopId)"> 清空购物车</span>
        </div>
       </div>
-      <template
-       v-for="item in productList"
-       :key='item._id'
-       >
-       <div class="product__item"   v-if="item.count > 0">
+       <div class="product__item"  v-for="item in productList"
+       :key='item._id'  >
         <div
          class="product__item__checked iconfont"
          v-html="item.check ?  '&#xe70f;' : '&#xe619;' "
@@ -41,7 +38,6 @@
           >+</span>
       </div>
     </div>
-      </template>
     </div>
     <div class="check">
       <div class="check__icon">
@@ -56,6 +52,7 @@
         总计：<span class="check__info__price">&yen;{{calculations.price}}</span>
       </div>
       <div class="check__btn">
+        <!-- ${shopId} -->
         <router-link :to="{ path: `/orderConfirmation/${shopId}` }">
           去结算
         </router-link>
@@ -65,33 +62,15 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { useCommenCartEffect } from '../../effects/cartEffects'
 // 获取购物车信息相关逻辑
 const useCartEffect = (shopId) => {
+  console.log('shopId', shopId)
   const store = useStore()
-  const { cartList, productList, changeCartItemInfo } = useCommenCartEffect(shopId)
-  const calculations = computed(() => {
-    const productList = cartList[shopId]?.productList
-    const result = { total: 0, price: 0, allChecked: true }
-    if (productList) {
-      for (let i in productList) {
-        let product = productList[i]
-        result.total += product.count
-        if (product.check) {
-          result.price += (product.count * product.price)
-        }
-        if (product.count > 0 && !product.check) {
-          result.allChecked = false
-        }
-      }
-    }
-    result.price = result.price.toFixed(2)
-    return result
-  })
-
+  const { productList, changeCartItemInfo, calculations } = useCommenCartEffect(shopId)
   const changeCartItemCheck = (shopId, productId) => {
     store.commit('changeCartItemCheck', {
       shopId, productId

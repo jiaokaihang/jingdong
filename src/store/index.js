@@ -7,7 +7,11 @@ const setLocalStorage = (state) => {
 }
 
 const getLocalStorage = () => {
-  return JSON.parse(localStorage.carList) || {}
+  try {
+    return JSON.parse(localStorage.carList)
+  } catch {
+    return {}
+  }
 }
 export default createStore({
   state: {
@@ -18,7 +22,7 @@ export default createStore({
   },
   mutations: {
     changeCartItemInfo (state, payload) {
-      console.log('22222222', payload)
+      console.log('payload', payload)
       const { shopId, productId, productInfo } = payload
       let shopInfo = state.carList[shopId] || {
         showName: '', productList: {}
@@ -63,6 +67,9 @@ export default createStore({
         }
       }
       setLocalStorage(state)
+    },
+    clearCartData (state, shopId) {
+      state.carList[shopId].productList = {}
     }
   },
   actions: {
