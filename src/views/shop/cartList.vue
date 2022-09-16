@@ -137,7 +137,7 @@ export default {
   &__header{
     display: flex;
    line-height: .40rem;
-    border-bottom: 1px solid  #F1F1F1;
+    border-bottom: 1px solid  $content-bgColor;
     font-size: .14rem;
     color: $content-fontcolor;
     &__all{
@@ -196,7 +196,7 @@ export default {
       margin-left: 0.06rem;
       line-height: 0.2rem;
       font-size: 0.12rem;
-      color: #999;
+      color:$origin;
       text-decoration: line-through;
     }
     .product__number {

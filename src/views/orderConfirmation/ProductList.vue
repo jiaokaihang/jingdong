@@ -47,11 +47,11 @@ export default {
 @import '../../style/mixins.scss';
 .products {
   margin: .16rem .18rem .1rem .18rem;
-  background: #FFF;
+  background:$bgColor;
   &__title {
     padding: .16rem;
     font-size: .16rem;
-    color: #333;
+    color: $content-fontcolor;
   }
   &__wrapper {
     overflow-y: scroll;
@@ -63,7 +63,7 @@ export default {
     top: 2.6rem;
   }
   &__list {
-    background: #FFF;
+    background: $bgColor;
   }
   &__item {
     position: relative;

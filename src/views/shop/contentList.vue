@@ -127,7 +127,7 @@ export default {
     font-size: 14px;
     color: $content-fontcolor;
     &--active {
-      background: #fff;
+      background: $bgColor;
     }
   }
 }
@@ -164,7 +164,7 @@ export default {
       margin: 0;
       line-height: 0.2rem;
       font-size: 0.14rem;
-      color: #e93b3b;
+      color: $hightlight-fontColor;
     }
     &__yen {
       font-size: 0.12rem;
@@ -173,7 +173,7 @@ export default {
       margin-left: 0.06rem;
       line-height: 0.2rem;
       font-size: 0.12rem;
-      color: #999;
+      color: $origin;
       text-decoration: line-through;
     }
     .product__number {

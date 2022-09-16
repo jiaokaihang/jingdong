@@ -32,17 +32,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+ @import '../../style/viriables.scss';
+@import '../../style/mixins.scss';
 .top {
   position: relative;
   height: 1.96rem;
   background-size: 100% 1.59rem;
-  background-image: linear-gradient(0deg, rgba(0,145,255,0.00) 4%, #0091FF 50%);
+  background-image: linear-gradient(0deg, rgba(0,145,255,0.00) 4%, $background 50%);
   background-repeat: no-repeat;
   &__header {
     position: relative;
     padding-top: .26rem;
     line-height: .24rem;
-    color: #FFF;
+    color: $bgColor;
     text-align: center;
     font-size: .16rem;
     &__back {
@@ -57,19 +59,19 @@ export default {
     right: .18rem;
     bottom: 0;
     height: 1.11rem;
-    background: #FFF;
+    background: $bgColor;
     border-radius: .04rem;
     &__title {
       line-height: .22rem;
       padding: .16rem 0 .14rem .16rem;
       font-size: .16rem;
-      color: #333;
+      color: $content-fontcolor;
     }
     &__address {
       line-height: .2rem;
       padding: 0 .4rem 0 .16rem;
       font-size: .14rem;
-      color: #333;
+      color:$content-fontcolor;
     }
     &__info {
       padding: .06rem 0 0 .16rem;
@@ -77,7 +79,7 @@ export default {
         margin-right: .06rem;
         line-height: .18rem;
         font-size: .12rem;
-        color: #666;
+        color:$border-color;
       }
     }
     &__icon {
@@ -85,7 +87,7 @@ export default {
       position: absolute;
       right: .16rem;
       top: .5rem;
-      color: #666;
+      color: $border-color;
       font-size: .2rem;
     }
   }

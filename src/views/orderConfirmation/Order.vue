@@ -103,8 +103,8 @@ export default {
   }
   &__btn {
     width: .98rem;
-    background: #4FB0F9;
-    color: #fff;
+    background: $origin-color;
+    color:$bgColor;
     text-align: center;
     font-size: .14rem;
   }
@@ -124,19 +124,19 @@ export default {
     transform: translate(-50%, -50%);
     width: 3rem;
     height: 1.56rem;
-    background: #FFF;
+    background: $bgColor;
     text-align: center;
     border-radius: .04rem;
     &__title {
       margin: .24rem 0 0 0;
       line-height: .26rem;
       font-size: .18rem;
-      color: #333;
+      color: $content-fontcolor;
     }
     &__desc {
       margin: .08rem 0 0 0;
       font-size: .14rem;
-      color: #666666;
+      color:$border-color;
     }
     &__btns {
       display: flex;
@@ -150,13 +150,13 @@ export default {
       font-size: .14rem;
       &--first {
         margin-right: .12rem;
-        border: .01rem solid #4FB0F9;
-        color: #4FB0F9;
+        border: .01rem solid $origin-color;
+        color: $origin-color;
       }
       &--last {
         margin-left: .12rem;
-        background: #4FB0F9;
-        color: #fff;
+        background: $origin-color;
+        color:$bgColor;
       }
     }
   }
