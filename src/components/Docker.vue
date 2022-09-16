@@ -2,7 +2,7 @@
     <div>
         <div class="docker">
             <div
-            :class="{'docker__item':true, 'docker__item--active': index===0}"
+            :class="{'docker__item':true, 'docker__item--active': index===currentIndex}"
 
              v-for="(item, index ) in dockerList"
               :key="item.icon">
@@ -18,12 +18,13 @@
 <script>
 export default {
   name: ' DockerList ',
+  props: ['currentIndex'],
   setup () {
     const dockerList = [
       { icon: ' &#xe6bb;', text: '首页', to: { name: 'Home' } },
       { icon: ' &#xe61b;', text: '购物车', to: { name: 'CartList' } },
       //   , params: { id: 2 }
-      { icon: ' &#xe897;', text: '订单', to: { name: 'Home' } },
+      { icon: ' &#xe897;', text: '订单', to: { name: 'OrderPage' } },
       { icon: ' &#xe8a0;', text: '我的', to: { name: 'Home' } }
     ]
     return { dockerList }
@@ -32,8 +33,8 @@ export default {
 </script>
 
 <style lang="scss" scoped >
-@import '../../style/viriables.scss';
-@import '../../style/mixins.scss';
+@import '../style/viriables.scss';
+@import '../style/mixins.scss';
 .wrapper{
     background:red;
 }

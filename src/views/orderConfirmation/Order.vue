@@ -53,7 +53,7 @@ const useMakeOrderEffect = (shopId, shopName, productList) => {
       })
       if (result?.errno === 0) {
         store.commit('clearCartData', shopId)
-        router.push({ name: 'Home' })
+        router.push({ name: 'OrderPage' })
       }
     } catch (e) {
       // 提示下单失败

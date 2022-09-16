@@ -27,6 +27,7 @@ export default {
   bottom: 0;
   background-color: #eee;
   overflow-y: scroll;
+  padding: 0;
 }
 
 </style>
